@@ -71,3 +71,5 @@ Conteneuriser le projet dans un Docker :
 - maintenant, faire une commande comme `docker run -d -p 8080:80 clickfast` devrait lancer le projet conteneurisé !
 
 ### 4. CI/CD
+
+https://medium.com/@pathirage/step-in-to-ci-cd-a-hands-on-guide-to-building-ci-cd-pipeline-with-github-actions-7490d6f7d8ff
