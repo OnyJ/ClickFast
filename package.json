@@ -1,0 +1,25 @@
+{
+  "name": "clickfast",
+  "version": "1.0.0",
+  "description": "Click really super fast",
+  "main": "script.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OnyJ/ClickFast.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OnyJ/ClickFast/issues"
+  },
+  "homepage": "https://github.com/OnyJ/ClickFast#readme",
+  "dependencies": {
+    "jsdom": "^25.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
