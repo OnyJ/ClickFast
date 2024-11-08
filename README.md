@@ -62,14 +62,58 @@ Créer un fichier `index.html`, `style.css`, `script.js`. Ils vont chacun avoir 
 Conteneuriser le projet dans un Docker :
 
 - créer un Dockerfile
-- trouver comment faire pour envelopper le projet dans un Dockerfile, et le lancer depuis docker. 
+- trouver comment faire pour envelopper le projet dans un Dockerfile, et le lancer depuis docker.
   - Faire une simple recherche internet, ex: `html css docker`.  
     On se rend compte que la plupart des personnes recommandent nginx qui est super simple et adapté au lancement de sites statiques.
   - Solution : il y a toujours plein de solutions possibles.
-    Moi j'ai appliqué [cette réponse](https://thriveread.com/run-html-with-docker-and-nginx/). 
+    Moi j'ai appliqué [cette réponse](https://thriveread.com/run-html-with-docker-and-nginx/).  
     D'autres ressources d'internet sur comment faire ça facilement disent à peu près la même chose : [omkara18 de dev.to](https://dev.to/omkara18/deploying-a-static-website-with-docker-a-comprehensive-guide-3gk), [Zulfikar sur medium](https://medium.com/@zul.m/deploying-a-static-html-site-with-docker-and-nginx-6f5bcdcbc650)
 - maintenant, faire une commande comme `docker run -d -p 8080:80 clickfast` devrait lancer le projet conteneurisé !
 
-### 4. CI/CD
+### 4. Mettre son site en ligne
 
-https://medium.com/@pathirage/step-in-to-ci-cd-a-hands-on-guide-to-building-ci-cd-pipeline-with-github-actions-7490d6f7d8ff
+[Github Pages](https://pages.github.com/) permet de le faire gratuitement !
+
+Voilà comment [avoir plusieurs repo de rendus dans notre page](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
+### 5. CI/CD
+
+Voilà un tuto https://medium.com/@pathirage/step-in-to-ci-cd-a-hands-on-guide-to-building-ci-cd-pipeline-with-github-actions-7490d6f7d8ff
+
+Mais on ne va pas le suivre.  
+On va simplement aller dans l'onglet Actions de notre projet, cliquer sur New Workflow. Là on voit plein de propositions de la part de github. On choisit Docker Image, pour qu'il nous édite un fichier `docker-image.yml`. Cela permettra aux Github Actions d'exécuter un Job concernant docker.  
+Ne pas oublier de cliquer su' "Commit Changes" pour sauvegarder.
+
+#### Tests
+
+Bel exemple ! Mais on va faire quelque chose qu'on a créé nous mêmes, c'est plus intéressant.  
+On veut tester notre JS automatiquement, pour ne pas avoir à vérifier sans arrêt s'il se comporte comme on le souhaite.
+
+Créer un environnement node / npm :
+
+```bash
+npm init
+```
+
+Installer jest et jsdom pour nos tests :
+
+```bash
+npm install jsdom
+npm install --save-dev jest
+```
+
+Modifier le script de test du `package.json`
+
+```json
+"scripts": {
+  "test": "npx jest"
+},
+```
+
+Lancer les tests
+
+```bash
+npx jest
+# ou pour exécuter les tests de la section script, dans package.json :
+npm run test
+```
