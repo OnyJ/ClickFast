@@ -1,33 +1,48 @@
-import { JSDOM } from "jsdom";
+const { JSDOM } = require("jsdom");
 
 const { window } = new JSDOM(
-  (
-    <div>
-      <button id="button-clicker">Click !!!</button>
-      <div id="counter">0</div>
-    </div>
-  )
+  `
+  <div>
+    <button id="button-clicker">Click !!!</button>
+    <div id="counter">0</div>
+  </div>
+  `
 );
 
 global.document = window.document;
 
-// Ajouter un écouteur d'événements pour le bouton
+let count = 0;
 
-// Décrire le groupe de tests pour le bouton clicker
-// ...
-//    Réinitialiser le compteur avant chaque test
-//    ...
-//    Réinitialiser le compteur à 0
-//    Mettre à jour l'affichage du compteur
+document
+  .getElementById("button-clicker")
+  .addEventListener("click", () => {
+    count++;
+    document.getElementById("counter").innerHTML = count;
+  });
 
-// Test 1 : Vérifier que le compteur s'incrémente lors d'un clic sur le bouton
-//     Récupérer le bouton par son ID
-//     Simuler un clic sur le bouton
-//     Effectuer le premier clic
-//     Vérifier que le compteur affiche "1"
-//     Simuler un autre clic sur le bouton
-//     Effectuer le deuxième clic
-//     Vérifier que le compteur affiche "2"
+describe("Button Clicker", () => {
+  beforeEach(() => {
+    count = 0;
+    document.getElementById("counter").innerHTML = count;
+  });
 
-// Test 2 : Vérifier que le compteur commence à 0
-//     Vérifier que le compteur affiche "0" au départ
+  test("devrait augmenter counter de 1 apres chaque clic", () => {
+    const button = document.getElementById("button-clicker");
+
+    button.click();
+    expect(document.getElementById("counter").innerHTML).toBe("1");
+
+    button.click();
+    expect(document.getElementById("counter").innerHTML).toBe("2");
+
+    button.click();
+    button.click();
+    button.click();
+    button.click();
+    expect(document.getElementById("counter").innerHTML).toBe("6");
+  });
+
+  test("devrait initialiser counter a 0", () => {
+    expect(document.getElementById("counter").innerHTML).toBe("0");
+  });
+});
