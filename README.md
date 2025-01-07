@@ -84,22 +84,76 @@ Conteneuriser le projet dans un Docker :
 Implémentons le CI/CD !
 
 1. Mettre le projet en ligne (gratuitement grâce à github.io)
+
+   > Comment mettre son site en ligne ?
+
+   L'outil [Github Pages](https://pages.github.com/) permet de le faire gratuitement !  
+   Voilà comment [avoir plusieurs repo de rendus dans notre page](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+
 2. Configurer les Workflows
+   1. Voilà un tuto https://medium.com/@pathirage/step-in-to-ci-cd-a-hands-on-guide-to-building-ci-cd-pipeline-with-github-actions-7490d6f7d8ff  
+      Je vous invite à le survoler, mais on ne va pas le suivre.
+   2. On va simplement aller dans l'onglet Actions de notre projet (dans notre repo en ligne, directement sur github.com), cliquer sur New Workflow.
+   3. Là on voit plein de propositions de la part de github. On choisit Docker Image, pour qu'il nous édite un fichier `docker-image.yml`. Cela permettra aux Github Actions d'exécuter un Job concernant docker.
+   4. Ne pas oublier de cliquer sur "Commit Changes" pour sauvegarder.
 
 ### Exercice IV - Tests automatisés
 
 C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout seul de lancer nos tests 😎
 
-1. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit
-2. Inscrivons une règle pour que notre test soit bien lancé quand on veut push notre modification
-3. Bonus : Tests d'intégration
-   Alors là on est des boss, on va faire du code qui vérifie que notre front fonctionne bien.  
-   En utilisant Playwright, on va vérifier que quand on clique sur [...], on a bien [... qui réagit].  
-   Maintenant, faire que notre CI CD lance bien ces tests également
+> On veut tester notre JS automatiquement, pour ne pas avoir à vérifier sans arrêt s'il se comporte comme on le souhaite.
+
+#### 1. Écrire nos Tests Unitaires
+
+1. Pour exécuter des tests, nous aurons d'abord besoin d'installer les outils nécessaires.  
+   Créer un environnement node / npm :
+
+   ```bash
+   npm init
+   ```
+
+   Installer jest et jsdom pour nos tests :
+
+   ```bash
+   npm install jsdom
+   npm install --save-dev jest
+   ```
+
+2. Tout est installé, mais il faut modifier le script de test du `package.json` (car il est erronné).
+
+   ```json
+   "scripts": {
+     "test": "npx jest"
+   },
+   ```
+
+3. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit
+
+4. Désormais nous pouvons tester nos tests en local !  
+   Lancer les tests
+
+   ```bash
+   npx jest
+   # ou pour exécuter les tests de la section script, dans package.json :
+   npm run test
+   ```
+
+#### 2. Déclencher les tests en ligne
+
+Ça marche sur notre ordi, ça doit maintenant marcher en ligne !
+
+Inscrivons une règle pour que notre test soit bien lancé quand on veut push notre modification
+
+#### 3. Bonus : Tests d'intégration
+
+Alors là on est des boss, on va faire du code qui vérifie que notre front fonctionne bien.
+
+1. En utilisant [Playwright ?], on va vérifier que quand on clique sur [...], on a bien [... qui réagit].
+2. Maintenant, faire que notre CI CD lance bien ces tests également
 
 ### Exercice V - Connecter notre projet à une API
 
-Maintenant qu'on a une bonne grosse base et qu'on a vu tous les concepts qu'on souhaitait voir, on va pouvoir s'amuser un peu plus : on va créer un système de scoreboard, permettant à tout le monde de soumettre son score et voir celui des autres.
+Désormais, on a une bonne grosse base et qu'on a vu tous les concepts qu'on souhaitait voir, on va pouvoir s'amuser un peu plus : on va créer un système de scoreboard, permettant à tout le monde de soumettre son score et voir celui des autres.
 
 #### Comment manipuler l'API ?
 
