@@ -1,11 +1,11 @@
-const button = document.getElementById("button-clicker");
-const score = document.getElementById("score");
-let count = 0;
+const scoreDisplay = document.getElementById("score");
 let canPlay = true;
 let gameStarted = false;
-let timer = 5000;
+let scoreCount = 0;
 
 function handleGameButton() {
+  const button = document.getElementById("button-clicker");
+
   button.addEventListener("click", () => {
     if (!gameStarted) {
       gameStarted = true;
@@ -13,9 +13,9 @@ function handleGameButton() {
     }
 
     if (canPlay) {
-      count++;
+      scoreCount++;
     }
-    score.innerHTML = count;
+    scoreDisplay.innerHTML = scoreCount;
   });
 }
 
@@ -34,4 +34,16 @@ function startTimer() {
   }
 }
 
+function handleResetButton() {
+  const resetButton = document.getElementById("button-reset");
+
+  resetButton.addEventListener("click", () => {
+    canPlay = true;
+    gameStarted = false;
+    scoreCount = 0;
+    scoreDisplay.innerHTML = scoreCount;
+  });
+}
+
 handleGameButton();
+handleResetButton();
