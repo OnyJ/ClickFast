@@ -119,7 +119,12 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    npm install --save-dev jest
    ```
 
-2. Tout est installé, mais il faut modifier le script de test du `package.json` (car il est erronné).
+   Vous aussi vous avez ça ?
+   ![image](https://github.com/user-attachments/assets/453bb6e2-cf6e-423a-aba8-68699b40a64a)
+   Pas de panique ! Ceci est un warning et non une erreur, donc rien de bloquant.  
+   Une petite astuce pour régler le problème est de lancer la commande `npm audit fix` et hop, on nous dit que tout est propre !
+
+3. Tout est installé, mais il faut modifier le script de test du `package.json` (car il est erronné).
 
    ```json
    "scripts": {
@@ -127,9 +132,9 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    },
    ```
 
-3. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit
+4. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit
 
-4. Désormais nous pouvons tester nos tests en local !  
+5. Désormais nous pouvons tester nos tests en local !  
    Lancer les tests
 
    ```bash
