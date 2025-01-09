@@ -127,7 +127,10 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    },
    ```
 
-3. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit
+3. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit.  
+   _Ok mais par où je commence ?_  
+   Eh bien comme tout bon dev, on fait une petite recherche de `jest` sur internet.  
+   Vous verrez que vous trouverez assez facilement leur [Getting Started](https://jestjs.io/docs/getting-started) (comme pour tout outil de dev), qui nous accompagne sur la prise en main de l'outil.
 
 4. Désormais nous pouvons tester nos tests en local !  
    Lancer les tests
