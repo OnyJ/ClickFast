@@ -6,11 +6,11 @@ const {
   scoreCount,
 } = require("../script");
 
-// test("initial values are correct", () => {
-//   expect(canPlay).toBe(true);
-//   expect(gameStarted).toBe(false);
-//   expect(scoreCount).toBe(0);
-// });
+test("initial values are correct", () => {
+  expect(canPlay).toBe(true);
+  expect(gameStarted).toBe(false);
+  expect(scoreCount).toBe(0);
+});
 
 test("Les fonctions sont correctement définies", () => {
   expect(typeof handleGameButton).toBe("function");
