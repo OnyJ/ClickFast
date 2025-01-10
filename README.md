@@ -103,7 +103,7 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
 
 > On veut tester notre JS automatiquement, pour ne pas avoir à vérifier sans arrêt s'il se comporte comme on le souhaite.
 
-#### 1. Écrire nos Tests Unitaires
+#### 1. Les Tests Unitaires avec Jest - Bases des bases
 
 1. Pour exécuter des tests, nous aurons d'abord besoin d'installer les outils nécessaires.  
    Créer un environnement node / npm :
@@ -132,10 +132,11 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    },
    ```
 
-3. Écrivons des Tests unitaires, pour vérifier que quand X se passe, Y résultat se produit.  
-   _Ok mais par où je commence ?_  
+3. Écrivons notre premier Test Unitaire, pour vérifier que _"quand X se passe, Y résultat se produit"_.  
+   => _Ok mais par où je commence ?_  
    Eh bien comme tout bon dev, on fait une petite recherche de `jest` sur internet.  
-   Vous verrez que vous trouverez assez facilement leur [Getting Started](https://jestjs.io/docs/getting-started) (comme pour tout outil de dev), qui nous accompagne sur la prise en main de l'outil.
+   Vous verrez que vous trouverez assez facilement leur [Getting Started](https://jestjs.io/docs/getting-started) (comme pour tout outil de dev), qui nous accompagne sur la prise en main de l'outil.  
+   À vous de jouer, appliquez l'exemple avec `sum` dans le Getting Started.
 
 4. Désormais nous pouvons tester nos tests en local !  
    Lancer les tests
@@ -146,76 +147,153 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    npm run test
    ```
 
-5. Les tests avec l'exemple `sum` du getting started ont marché ? Parfait ! Maintenant, à vous de jouer : je vous donne des tips puis des tests à réaliser.
-   **Un peu de méthodologie** :
-   Comment faire mon premier test de `script.js` ?
+#### 2. Inventer notre propre test
 
-   1. Faire un faux DOM (voir code snippet dans la partie _Exo 6_ un peu plus bas)
-   2. Importer notre / nos fonctions JS, ou notre fichier JS complet
-   3. Faire que le test attende que le DOM ait chargé. Une fois qu'il a chargé, il peut être autorisé à lancer notre/nos fonctions JS (ou fichier complet)
-   4. Simuler notre premier test : on récupère le bouton de notre "Faux DOM", et on clique dessus une à plusieurs fois, pour ensuite utiliser `expect()` de Jest. De cette manière on précisera "je m'attends à voir que le score ait augmenté de tant".
+> Les tests avec l'exemple `sum` du getting started ont marché ?  
+> Parfait ! Maintenant, à vous de jouer : je vous donne des tips puis des tests à réaliser.
 
-   **Exo 6:**
-   Réalisez les tests suivants pour faire en sorte que les tests passent :
+##### 2.1. Installations :
 
-   ```javascript
-   describe("(nommez ce groupe de test)", () => {
-     // Avant chaque test, configurer l'environnement de test
-     beforeEach(() => {
-       // Notre "Faux DOM", qui sera recréé avant chaque test
-       document.body.innerHTML = `
-        <div id="score">0</div>
-        <div id="timer">5</div>
-        <button id="button-clicker">Click me!</button>
-        <button id="button-reset">Reset</button>
-      `;
+Vous l'aurez vu, notre projet a majoritairement des éléments visuels à tester. Donc nous devrons faire de la config, afin de pouvoir **tester les éléments du DOM**.
 
-       // Autres éléments nécessaires au bon déroulement de chaque test
-       handleGameButton();
-       handleResetButton();
-     });
+1. Installer `jest-environment-jsdom`
+   ```sh
+   npm install jest-environment-jsdom
+   ```
+2. Faire que jsdom soit inclu dans nos tests automatiquement (au lieu de devoir relancer cette commande à chaque fois)  
+   Dans le package.json, mettre à jour le script `"test"` :
+   ```json
+   // package.json
+   "scripts": {
+     "test": "npx jest --env=jsdom"
+   },
+   ```
 
-     // Test pour vérifier que le score s'incrémente lorsque le bouton est cliqué
-     test("Vérifiez que le score s'incrémente correctement", () => {
-       // Simuler un clic sur le bouton
-       // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
-     });
+Maintenant, quand on lancera `npm test`, le DOM sera pris en compte.
 
-     // Test pour vérifier que le timer fonctionne correctement
-     test("Vérifiez que le timer décompte correctement", (done) => {
-       // Simuler un clic pour démarrer le jeu
-       // Attendez un certain temps et vérifiez que le timer affiche 0
-     });
+##### 2.2. Tester les clics sur le bouton :
 
-     // Test pour vérifier que le jeu ne permet pas de cliquer après la fin du timer
-     test("Vérifiez que le score ne s'incrémente pas après la fin du timer", (done) => {
-       // Simuler un clic pour démarrer le jeu
-       // Attendez que le timer expire, puis essayez de cliquer à nouveau
-       // Vérifiez que le score n'a pas changé
-     });
+L'objectif du test unitaire va être de vérifier que quand on clique sur un bouton, une ou plusieurs fois, il y a le bon nombre de points stockés dans le score.
 
-     // Test pour vérifier que le bouton de réinitialisation fonctionne correctement
-     test("Vérifiez que le bouton de réinitialisation remet le score à zéro", () => {
-       // Simuler quelques clics pour augmenter le score
-       // Vérifiez que le score est supérieur à zéro
-       // Simuler un clic sur le bouton de réinitialisation
-       // Vérifiez que le score a été remis à zéro
-     });
+1. **Création d'un DOM de test**  
+   Avec Jest, on va tester une représentation factice de notre projet.  
+   On va donc créer un faux DOM dans notre test, pour jouer dessus.
+
+   - Si les fonctions de `script.js` fonctionnent sur ce HTML, nos tests passent
+   - Si les fonctions ne se comportent pas comme on le souhaite, les tests échouent.
+
+   Créons notre "faux DOM" dans le fichier `script.test.js` :
+
+   ```js
+   document.body.innerHTML = `
+     <div id="score">0</div>
+     <div id="timer">5</div>
+     <button id="button-clicker">Click me!</button>
+     <button id="button-reset">Reset</button>
+   `;
+   ```
+
+2. **Importer nos éléments JS**  
+   Certaines personnes auront réalisé leur code avec 1 fonction JS, ou plusieurs fonctions JS, ou encore, tout est directement dans le fichier. Il y a aussi des variables.  
+   -> Dans tous les cas, il faudra récupérer ces éléments dans notre `script.test.js` afin de vérifier s'ils marchent quand on teste notre JS.
+   _Ne pas oublier d'aussi exporter ces éléments depuis le JS ! Sinon cela ne marche pas_
+
+   ```js
+   const {
+     // Mes éléments à importer
+   } = require("chemin_vers_mon_script.js");
+   ```
+
+3. **Attendre que le DOM charge**.  
+   Petite astuce qui évitera beaucoup de temps de débug : il faut savoir que le code JS marche correctement SEULEMENT si on attend bien que le DOM ait totalement chargé !  
+   -> Donc je laisse faire une recherche, pour savoir comment attendre que le dom charge.  
+   Une fois la réponse trouvée, il faut la mettre dans un `test` :
+
+   ```js
+   test("...description de mon test", () => {
+     // Ici on peut mettre :
+     // - le DOM factice
+     // - le code à exécuter en JS
    });
    ```
 
-#### 2. Déclencher les tests en ligne
+4. **Simuler notre premier test**  
+   Il ne reste plus qu'à :
+   - **récupérer le bouton** depuis notre "Faux DOM"
+   - simuler un (ou plusieurs) clic(s) sur ce bouton
+   - utiliser [`expect()` de Jest](https://jestjs.io/docs/expect).  
+     Ainsi on précisera "je m'attends à voir que le score ait augmenté de tant".
 
-Ça marche sur notre ordi, ça doit maintenant marcher en ligne !
+#### 3. Ajouter d'autres tests (Bonus)
 
-Inscrivons une règle pour que notre test soit bien lancé quand on veut push notre modification
+Maintenant qu'on a bien compris comment tout cela fonctionne, on peut restructurer notre code.
 
-#### 3. Bonus : Tests d'intégration
+```javascript
+describe("... Nom du groupe de test (définissez-le !)", () => {
+  beforeEach(() => {
+    // Fonction pour lancer du code avant chaque test
+    // Configurer l'environnement de test
 
-Alors là on est des boss, on va faire du code qui vérifie que notre front fonctionne bien.
+    // 1. Notre "Faux DOM", qui sera recréé avant chaque test
+    document.body.innerHTML = `
+     <div id="score">0</div>
+     <div id="timer">5</div>
+     <button id="button-clicker">Click me!</button>
+     <button id="button-reset">Reset</button>
+   `;
 
-1. En utilisant [Playwright ?], on va vérifier que quand on clique sur [...], on a bien [... qui réagit].
-2. Maintenant, faire que notre CI CD lance bien ces tests également
+    // 2. Appel de nos fonctions JS
+    handleGameButton();
+    handleResetButton();
+  });
+
+  test("... mon test qui vérifie telle chose....", () => {
+    // Code du test pour provoquer un comportement
+    // Utilisation de expect() pour vérifier si ça s'est passé comme on voulait
+  });
+```
+
+##### 3.2. Ajouts de tests
+
+Et voilà !!! On est enfin prêts à tester plus de cas d'usages de notre projet, pour éviter tout comportement inattendu.
+
+```javascript
+  // Test pour vérifier que le score s'incrémente lorsque le bouton est cliqué
+  test("Vérifiez que le score s'incrémente correctement", () => {
+    // Simuler un clic sur le bouton
+    // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
+  });
+
+  // Test pour vérifier que le timer fonctionne correctement
+  test("Vérifiez que le timer décompte correctement", (done) => {
+    // Simuler un clic pour démarrer le jeu
+    // Attendez un certain temps et vérifiez que le timer affiche 0
+  });
+
+  // Test pour vérifier que le jeu ne permet pas de cliquer après la fin du timer
+  test("Vérifiez que le score ne s'incrémente pas après la fin du timer", (done) => {
+    // Simuler un clic pour démarrer le jeu
+    // Attendez que le timer expire, puis essayez de cliquer à nouveau
+    // Vérifiez que le score n'a pas changé
+  });
+
+  // Test pour vérifier que le bouton de réinitialisation fonctionne correctement
+  test("Vérifiez que le bouton de réinitialisation remet le score à zéro", () => {
+    // Simuler quelques clics pour augmenter le score
+    // Vérifiez que le score est supérieur à zéro
+    // Simuler un clic sur le bouton de réinitialisation
+    // Vérifiez que le score a été remis à zéro
+  });
+});
+```
+
+#### 5. Déclencher les tests en ligne
+
+Maintenant qu'on sait faire fonctionner nos tests en local (sur notre propre ordi), on va faire en sorte que ça se lance en ligne !
+
+> Faire que notre CI CD lance bien ces tests également
+
+**Créons un nouveau workflow** pour que notre test soit bien lancé quand on veut push notre modification
 
 ### Exercice V - Connecter notre projet à une API
 
