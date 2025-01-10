@@ -4,11 +4,12 @@
   "description": "Sois le plus rapide des clickers du game ⚡",
   "main": "script.js",
   "scripts": {
-    "test": "npx jest"
+    "test": "npx jest --env=jsdom"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jest-environment-jsdom": "^29.7.0",
     "jsdom": "^25.0.1"
   },
   "devDependencies": {
