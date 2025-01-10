@@ -1,9 +1,9 @@
-const scoreDisplay = document.getElementById("score");
 let canPlay = true;
 let gameStarted = false;
 let scoreCount = 0;
 
 function handleGameButton() {
+  const scoreDisplay = document.getElementById("score");
   const button = document.getElementById("button-clicker");
 
   button.addEventListener("click", () => {
@@ -35,6 +35,7 @@ function startTimer() {
 }
 
 function handleResetButton() {
+  const scoreDisplay = document.getElementById("score");
   const resetButton = document.getElementById("button-reset");
 
   resetButton.addEventListener("click", () => {
@@ -45,5 +46,17 @@ function handleResetButton() {
   });
 }
 
-handleGameButton();
-handleResetButton();
+document.addEventListener("DOMContentLoaded", () => {
+  const scoreDisplay = document.getElementById("score");
+
+  handleGameButton();
+  handleResetButton();
+});
+
+module.exports = {
+  handleGameButton,
+  handleResetButton,
+  canPlay,
+  gameStarted,
+  scoreCount,
+};
