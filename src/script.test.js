@@ -1,5 +1,3 @@
-// const { canPlay, gameStarted, scoreCount } = require("../script");
-
 const {
   handleGameButton,
   handleResetButton,
@@ -19,41 +17,8 @@ test("Les fonctions sont correctement définies", () => {
   expect(typeof handleResetButton).toBe("function");
 });
 
-test("Vérifiez que le score s'incrémente correctement", () => {
-  // beforeEach
-  document.body.innerHTML = `
-      <div id="score">0</div>
-      <div id="timer">5</div>
-      <button id="button-clicker">Click me!</button>
-      <button id="button-reset">Reset</button>
-    `;
-
-  const {
-    handleGameButton,
-    handleResetButton,
-    scoreCount,
-  } = require("../script");
-
-  document.addEventListener("DOMContentLoaded", () => {
-    handleGameButton();
-    handleResetButton();
-
-    // Testing click increments
-    const button = document.getElementById("button-clicker");
-    button.click();
-    button.click();
-
-    console.log(scoreCount);
-
-    expect(scoreCount).toBe(2);
-  });
-});
-
-/*
 describe("(nommez ce groupe de test)", () => {
-  // Avant chaque test, configurer l'environnement de test
   beforeEach(() => {
-    // Réinitialiser le DOM ou créer des éléments nécessaires pour les tests
     document.body.innerHTML = `
       <div id="score">0</div>
       <div id="timer">5</div>
@@ -61,32 +26,22 @@ describe("(nommez ce groupe de test)", () => {
       <button id="button-reset">Reset</button>
     `;
 
-    const {
-      handleGameButton,
-      handleResetButton,
-    } = require("../script");
-
-    // Appeler les fonctions pour attacher les événements
-    handleGameButton();
-    handleResetButton();
+    document.addEventListener("DOMContentLoaded", () => {
+      handleGameButton();
+      handleResetButton();
+    });
   });
 
-  // Test pour vérifier que le score s'incrémente lorsque le bouton est cliqué
   test("Vérifiez que le score s'incrémente correctement", () => {
-    // Simuler un clic sur le bouton
-
-    console.log(document.body.innerHTML);
-
-    // const button = document.getElementById("button-clicker");
-    // console.log("bouton marche ?");
-    // console.log(button);
-    //
-    // // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
-    // button.click();
-    // button.click();
-    //
-    // expect(scoreCount).toBe(2);
+    document.addEventListener("DOMContentLoaded", () => {
+      const button = document.getElementById("button-clicker");
+      button.click();
+      button.click();
+      expect(scoreCount).toBe(2);
+    });
   });
+
+  /*
 
   // Test pour vérifier que le timer fonctionne correctement
   test("Vérifiez que le timer décompte correctement", (done) => {
@@ -108,6 +63,6 @@ describe("(nommez ce groupe de test)", () => {
     // Simuler un clic sur le bouton de réinitialisation
     // Vérifiez que le score a été remis à zéro
   });
-});
 
-*/
+  */
+});
