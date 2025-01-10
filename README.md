@@ -161,9 +161,8 @@ Vous l'aurez vu, notre projet a majoritairement des éléments visuels à tester
    npm install jest-environment-jsdom
    ```
 2. Faire que jsdom soit inclu dans nos tests automatiquement (au lieu de devoir relancer cette commande à chaque fois)  
-   Dans le package.json, mettre à jour le script `"test"` :
+   Dans le `package.json`, mettre à jour le script `"test"` :
    ```json
-   // package.json
    "scripts": {
      "test": "npx jest --env=jsdom"
    },
