@@ -124,7 +124,7 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    Pas de panique ! Ceci est un warning et non une erreur, donc rien de bloquant.  
    Une petite astuce pour régler le problème est de lancer la commande `npm audit fix` et hop, on nous dit que tout est propre !
 
-3. Tout est installé, mais il faut modifier le script de test du `package.json` (car il est erronné).
+2. Tout est installé, mais il faut modifier le script de test du `package.json` (car il est erronné).
 
    ```json
    "scripts": {
@@ -137,7 +137,7 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    Eh bien comme tout bon dev, on fait une petite recherche de `jest` sur internet.  
    Vous verrez que vous trouverez assez facilement leur [Getting Started](https://jestjs.io/docs/getting-started) (comme pour tout outil de dev), qui nous accompagne sur la prise en main de l'outil.
 
-5. Désormais nous pouvons tester nos tests en local !  
+4. Désormais nous pouvons tester nos tests en local !  
    Lancer les tests
 
    ```bash
@@ -146,54 +146,63 @@ C'est bien beau notre CI/CD, mais c'est encore mieux lorsqu'il se charge tout se
    npm run test
    ```
 
-6. Les tests avec l'exemple `sum` du getting started ont marché ? Parfait ! Maintenant, à vous de jouer : réalisez les tests suivants pour faire en sorte que les tests passent
+5. Les tests avec l'exemple `sum` du getting started ont marché ? Parfait ! Maintenant, à vous de jouer : je vous donne des tips puis des tests à réaliser.
+   **Un peu de méthodologie** :
+   Comment faire mon premier test de `script.js` ?
+
+   1. Faire un faux DOM (voir code snippet dans la partie _Exo 6_ un peu plus bas)
+   2. Importer notre / nos fonctions JS, ou notre fichier JS complet
+   3. Faire que le test attende que le DOM ait chargé. Une fois qu'il a chargé, il peut être autorisé à lancer notre/nos fonctions JS (ou fichier complet)
+   4. Simuler notre premier test : on récupère le bouton de notre "Faux DOM", et on clique dessus une à plusieurs fois, pour ensuite utiliser `expect()` de Jest. De cette manière on précisera "je m'attends à voir que le score ait augmenté de tant".
+
+   **Exo 6:**
+   Réalisez les tests suivants pour faire en sorte que les tests passent :
+
    ```javascript
    describe("(nommez ce groupe de test)", () => {
-    // Avant chaque test, configurer l'environnement de test
-    beforeEach(() => {
-      // Réinitialiser le DOM ou créer des éléments nécessaires pour les tests
-      document.body.innerHTML = `
+     // Avant chaque test, configurer l'environnement de test
+     beforeEach(() => {
+       // Notre "Faux DOM", qui sera recréé avant chaque test
+       document.body.innerHTML = `
         <div id="score">0</div>
         <div id="timer">5</div>
         <button id="button-clicker">Click me!</button>
         <button id="button-reset">Reset</button>
       `;
-  
-      // Appeler les fonctions pour attacher les événements
-      handleGameButton();
-      handleResetButton();
-    });
-  
-    // Test pour vérifier que le score s'incrémente lorsque le bouton est cliqué
-    test("Vérifiez que le score s'incrémente correctement", () => {
-      // Simuler un clic sur le bouton
-      // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
-    });
-  
-    // Test pour vérifier que le timer fonctionne correctement
-    test("Vérifiez que le timer décompte correctement", (done) => {
-      // Simuler un clic pour démarrer le jeu
-      // Attendez un certain temps et vérifiez que le timer affiche 0
-    });
-  
-    // Test pour vérifier que le jeu ne permet pas de cliquer après la fin du timer
-    test("Vérifiez que le score ne s'incrémente pas après la fin du timer", (done) => {
-      // Simuler un clic pour démarrer le jeu
-      // Attendez que le timer expire, puis essayez de cliquer à nouveau
-      // Vérifiez que le score n'a pas changé
-    });
-  
-    // Test pour vérifier que le bouton de réinitialisation fonctionne correctement
-    test("Vérifiez que le bouton de réinitialisation remet le score à zéro", () => {
-      // Simuler quelques clics pour augmenter le score
-      // Vérifiez que le score est supérieur à zéro
-      // Simuler un clic sur le bouton de réinitialisation
-      // Vérifiez que le score a été remis à zéro
-    });
+
+       // Autres éléments nécessaires au bon déroulement de chaque test
+       handleGameButton();
+       handleResetButton();
+     });
+
+     // Test pour vérifier que le score s'incrémente lorsque le bouton est cliqué
+     test("Vérifiez que le score s'incrémente correctement", () => {
+       // Simuler un clic sur le bouton
+       // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
+     });
+
+     // Test pour vérifier que le timer fonctionne correctement
+     test("Vérifiez que le timer décompte correctement", (done) => {
+       // Simuler un clic pour démarrer le jeu
+       // Attendez un certain temps et vérifiez que le timer affiche 0
+     });
+
+     // Test pour vérifier que le jeu ne permet pas de cliquer après la fin du timer
+     test("Vérifiez que le score ne s'incrémente pas après la fin du timer", (done) => {
+       // Simuler un clic pour démarrer le jeu
+       // Attendez que le timer expire, puis essayez de cliquer à nouveau
+       // Vérifiez que le score n'a pas changé
+     });
+
+     // Test pour vérifier que le bouton de réinitialisation fonctionne correctement
+     test("Vérifiez que le bouton de réinitialisation remet le score à zéro", () => {
+       // Simuler quelques clics pour augmenter le score
+       // Vérifiez que le score est supérieur à zéro
+       // Simuler un clic sur le bouton de réinitialisation
+       // Vérifiez que le score a été remis à zéro
+     });
    });
    ```
-
-
 
 #### 2. Déclencher les tests en ligne
 
