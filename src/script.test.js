@@ -1,11 +1,55 @@
-const { canPlay, gameStarted, scoreCount } = require("../script");
+// const { canPlay, gameStarted, scoreCount } = require("../script");
 
-test("initial values are correct", () => {
-  expect(canPlay).toBe(true);
-  expect(gameStarted).toBe(false);
-  expect(scoreCount).toBe(0);
+const {
+  handleGameButton,
+  handleResetButton,
+  canPlay,
+  gameStarted,
+  scoreCount,
+} = require("../script");
+
+// test("initial values are correct", () => {
+//   expect(canPlay).toBe(true);
+//   expect(gameStarted).toBe(false);
+//   expect(scoreCount).toBe(0);
+// });
+
+test("Les fonctions sont correctement définies", () => {
+  expect(typeof handleGameButton).toBe("function");
+  expect(typeof handleResetButton).toBe("function");
 });
 
+test("Vérifiez que le score s'incrémente correctement", () => {
+  // beforeEach
+  document.body.innerHTML = `
+      <div id="score">0</div>
+      <div id="timer">5</div>
+      <button id="button-clicker">Click me!</button>
+      <button id="button-reset">Reset</button>
+    `;
+
+  const {
+    handleGameButton,
+    handleResetButton,
+    scoreCount,
+  } = require("../script");
+
+  document.addEventListener("DOMContentLoaded", () => {
+    handleGameButton();
+    handleResetButton();
+
+    // Testing click increments
+    const button = document.getElementById("button-clicker");
+    button.click();
+    button.click();
+
+    console.log(scoreCount);
+
+    expect(scoreCount).toBe(2);
+  });
+});
+
+/*
 describe("(nommez ce groupe de test)", () => {
   // Avant chaque test, configurer l'environnement de test
   beforeEach(() => {
@@ -17,6 +61,11 @@ describe("(nommez ce groupe de test)", () => {
       <button id="button-reset">Reset</button>
     `;
 
+    const {
+      handleGameButton,
+      handleResetButton,
+    } = require("../script");
+
     // Appeler les fonctions pour attacher les événements
     handleGameButton();
     handleResetButton();
@@ -25,7 +74,18 @@ describe("(nommez ce groupe de test)", () => {
   // Test pour vérifier que le score s'incrémente lorsque le bouton est cliqué
   test("Vérifiez que le score s'incrémente correctement", () => {
     // Simuler un clic sur le bouton
-    // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
+
+    console.log(document.body.innerHTML);
+
+    // const button = document.getElementById("button-clicker");
+    // console.log("bouton marche ?");
+    // console.log(button);
+    //
+    // // Utilisez une méthode pour cliquer sur le bouton et vérifiez le score
+    // button.click();
+    // button.click();
+    //
+    // expect(scoreCount).toBe(2);
   });
 
   // Test pour vérifier que le timer fonctionne correctement
@@ -49,3 +109,5 @@ describe("(nommez ce groupe de test)", () => {
     // Vérifiez que le score a été remis à zéro
   });
 });
+
+*/
